@@ -1,6 +1,6 @@
 variable "env" { type = string }
 variable "vpc_id" { type = string }
-variable "subnets_ids" { type = list(string) }
+variable "subnet_ids" { type = list(string) }
 variable "cluster_name" { type = string }
 
  
