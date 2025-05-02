@@ -15,7 +15,7 @@ module "ecs" {
   source         = "./modules/ecs"
   env            = var.env
   vpc_id         = module.vpc.vpc_id
-  subnets_ids        = module.vpc.public_subnets
+  subnet_ids        = module.vpc.public_subnets
   cluster_name   = var.cluster_name
   security_group_id = module.alb.security_groups
   nginx_image        = var.nginx_image
