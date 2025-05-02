@@ -17,7 +17,12 @@ module "ecs" {
   vpc_id         = module.vpc.vpc_id
   subnets        = module.vpc.public_subnets
   cluster_name   = var.cluster_name
+  security_group_id = module.sg.id
+  nginx_image        = var.nginx_image
+  tomcat_image       = var.tomcat_image
+  apache_image       = var.apache_image
 }
+
 
 module "alb" {
   source            = "./modules/alb"
