@@ -1,10 +1,11 @@
 name: ECS Service Deploy
  
 on:
-  workflow_run:
-    workflows: ["Terraform Infra Pipeline"]
-    types:
-      - completed
+  push:
+  # workflow_run:
+  #   workflows: ["Terraform Infra Pipeline"]
+  #   types:
+  #     - completed
  
 permissions:
   id-token: write
