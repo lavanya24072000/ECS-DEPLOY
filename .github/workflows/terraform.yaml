@@ -1,0 +1,73 @@
+name: Terraform Infra Pipeline
+ 
+on:
+  push:
+    branches: [main]
+ 
+permissions:
+  id-token: write
+  contents: read
+ 
+jobs:
+  terraform:
+    name: Terraform Deploy
+    runs-on: ubuntu-latest
+ 
+    env:
+      AWS_REGION: us-east-1  # change as needed
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      SNS_TOPIC_ARN: ${{ secrets.SNS_TOPIC_ARN }}
+ 
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+ 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.ROLE }}
+          aws-region: us-east-1
+ 
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.10.5
+          
+      - name: Terraform Init
+        run: terraform init
+ 
+      - name: Terraform Plan
+        run: terraform plan -var-file="terraform.tfvars"
+ 
+      # - name: Run Checkov Scan
+      #   uses: bridgecrewio/checkov-action@v12
+      #   with:
+      #     quiet: true
+      #     soft_fail: false
+ 
+      # - name: Run Terraform Linter (tflint)
+      #   uses: terraform-linters/setup-tflint@v4
+      # - name: TFLint Check
+      #   run: tflint --init && tflint
+ 
+      - name: Apply if checks pass
+        # if: ${{ success() }}
+        run: terraform apply -auto-approve -var-file="terraform.tfvars"
+ 
+      # - name: Notify Slack
+      #   if: always()
+      #   uses: slackapi/slack-github-action@v1.25.0
+      #   with:
+      #     payload: |
+      #       {
+      #         "text": "Terraform workflow completed with status: ${{ job.status }}."
+      #       }
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+ 
+      # - name: Notify SNS
+      #   if: always()
+      #   run: |
+      #     aws sns publish \
+      #       --topic-arn "$SNS_TOPIC_ARN" \
+      #       --message "Terraform workflow completed with status: ${{ job.status }}."
