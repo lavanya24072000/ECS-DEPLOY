@@ -1,45 +1,37 @@
-resource "aws_ecs_cluster" "main" {
-  name = var.cluster_name
-  tags = { Environment = var.env }
+provider "aws" {
+  region = var.aws_region
 }
 
-# Security Group for ECS services
-resource "aws_security_group" "ecs_sg" {
-  name   = "${var.env}-ecs-sg"
-  vpc_id = var.vpc_id
-  ingress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+terraform {
+  backend "remote" {
+    organization = "<your-hcp-organization>"
+    workspaces {
+      name = var.env
+    }
   }
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  tags = { Name = "${var.env}-ecs-sg" }
 }
 
-# Target Groups
-resource "aws_lb_target_group" "nginx" {
-  name     = "${var.env}-nginx-tg"
-  port     = 8080
-  protocol = "HTTP"
-  vpc_id   = var.vpc_id
+module "vpc" {
+  source = "./modules/vpc"
+  env    = var.env
+  vpc_cidr = var.vpc_cidr
+  azs      = var.azs
 }
 
-resource "aws_lb_target_group" "tomcat" {
-  name     = "${var.env}-tomcat-tg"
-  port     = 8090
-  protocol = "HTTP"
-  vpc_id   = var.vpc_id
+module "ecs" {
+  source         = "./modules/ecs"
+  env            = var.env
+  vpc_id         = module.vpc.vpc_id
+  subnets        = module.vpc.public_subnets
+  cluster_name   = var.cluster_name
 }
 
-resource "aws_lb_target_group" "apache" {
-  name     = "${var.env}-apache-tg"
-  port     = 80
-  protocol = "HTTP"
-  vpc_id   = var.vpc_id
+module "alb" {
+  source            = "./modules/alb"
+  env               = var.env
+  vpc_id            = module.vpc.vpc_id
+  public_subnet_ids = module.vpc.public_subnets
+  alb_name          = var.alb_name
+  target_groups     = module.ecs.target_groups
 }
+ 
