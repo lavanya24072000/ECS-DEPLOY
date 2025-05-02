@@ -21,3 +21,4 @@ output "tomcat_service_name" {
 output "apache_service_name" {
   value = aws_ecs_service.apache.name
 }
+output "cluster_name" { value = aws_ecs_cluster.main.name }
