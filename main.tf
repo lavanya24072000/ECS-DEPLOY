@@ -2,14 +2,7 @@ provider "aws" {
   region = var.aws_region
 }
 
-terraform {
-  backend "remote" {
-    organization = "<your-hcp-organization>"
-    workspaces {
-      name = var.env
-    }
-  }
-}
+
 
 module "vpc" {
   source = "./modules/vpc"
