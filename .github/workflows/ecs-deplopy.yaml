@@ -1,0 +1,75 @@
+name: ECS Service Deploy
+ 
+on:
+  workflow_run:
+    workflows: ["Terraform Infra Pipeline"]
+    types:
+      - completed
+ 
+permissions:
+  id-token: write
+  contents: read
+ 
+jobs:
+  ecs-deploy:
+    name: ECS Deploy
+    runs-on: ubuntu-latest
+ 
+    env:
+      AWS_REGION: us-east-1  # change as needed
+      CLUSTER_NAME: PROD-ecs-cluster  # pass via secret or tf output
+      SERVICE_NGINX: nginx-service
+      SERVICE_APACHE: apache-service
+      SERVICE_TOMCAT: tomcat-service
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      SNS_TOPIC_ARN: ${{ secrets.SNS_TOPIC_ARN }}
+ 
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+ 
+      - name: Configure AWS Credentials using OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.ROLE }}
+          aws-region: ${{ env.AWS_REGION }}
+ 
+      - name: Update ECS Service - Nginx
+        run: |
+          aws ecs update-service \
+            --cluster "$CLUSTER_NAME" \
+            --service "$SERVICE_NGINX" \
+            --force-new-deployment
+ 
+      - name: Update ECS Service - Apache
+        run: |
+          aws ecs update-service \
+            --cluster "$CLUSTER_NAME" \
+            --service "$SERVICE_APACHE" \
+            --force-new-deployment
+ 
+      - name: Update ECS Service - Tomcat
+        run: |
+          aws ecs update-service \
+            --cluster "$CLUSTER_NAME" \
+            --service "$SERVICE_TOMCAT" \
+            --force-new-deployment
+ 
+      - name: Notify Slack
+        if: always()
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "text": "ECS deploy completed with status: ${{ job.status }}."
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+ 
+      - name: Notify SNS
+        if: always()
+        run: |
+          aws sns publish \
+            --topic-arn "$SNS_TOPIC_ARN" \
+            --message "ECS deploy completed with status: ${{ job.status }}."
+ 
