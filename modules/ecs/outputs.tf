@@ -5,7 +5,7 @@ output "target_groups" {
     apache = aws_lb_target_group.apache.arn
   }
 }
-output "cluster_name" { value = aws_ecs_cluster.main.name }
+
 output "ecs_cluster_id" {
   value = aws_ecs_cluster.this.id
 }
