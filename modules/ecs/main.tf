@@ -15,7 +15,7 @@ resource "aws_lb_target_group" "nginx" {
  
 resource "aws_lb_target_group" "tomcat" {
   name     = "${var.env}-tomcat-tg"
-  port     = 8090
+  port     = 8080
   protocol = "HTTP"
   vpc_id   = var.vpc_id
   target_type = "ip"
