@@ -42,7 +42,10 @@ jobs:
         with:
           role-to-assume: ${{ secrets.ROLE }}
           aws-region: us-east-1
-          
+          ######## AUTH TO HCP ###########
+      - name: Set Terraform Cloud Token
+        run: echo "TF_TOKEN_app_terraform_io=${{ secrets.TFC_TOKEN }}" >> $GITHUB_ENV
+        
             ######### setup terraformm and initialize ##########
             
       - name: Setup Terraform
