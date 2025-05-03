@@ -8,7 +8,8 @@ variable "alb_name" { type = string }
 variable "nginx_image" {
   default = "docker.io/hashicorp/http-echo:latest"
 }
- 
+
+
 variable "tomcat_image" {
   default = "tomcat:9.0.104-jdk8-corretto-al2"
 }
