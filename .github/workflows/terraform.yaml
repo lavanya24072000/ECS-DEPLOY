@@ -30,13 +30,10 @@ jobs:
         
           ##########  TERRAFORM DOCS ###########
           
-      - name: Render terraform docs inside the README.md and push changes back to PR branch
+      - name: Generate TF Docs
         uses: terraform-docs/gh-actions@v1.4.1
         with:
            working-dir: .
-           output-file: README.md
-           output-method: inject
-           git-push: "true"
            
             ########## aws authenticate ###########
             
@@ -85,9 +82,9 @@ jobs:
         run: terraform apply -auto-approve -var-file="terraform.tfvars"
 
         
-      # - name: Terraform destroy
-      #   if: always()
-      #   run: terraform destroy -auto-approve
+      - name: Terraform destroy
+        if: always()
+        run: terraform destroy -auto-approve
 
                         ############## publish artifacts ###########
                         
@@ -120,13 +117,16 @@ jobs:
       - name: Send SNS success notification
         if: success()
         run: |
-            MESSAGE= "*Job Status Summary*  
+            MESSAGE= $(cat <<EOF 
+            "*Job Status Summary*  
             Pipeline: ${{ github.workflow }}
             Status: ${{ job.status }}
             Completed Jobs:
             - Checkout_publish: ${{ needs.terraform.outputs.checkout-status }}
             - Deploy: ${{ needs.deploy.outputs.deploy-status }}
             Thank you for your contribution! 😊"
+            EOF
+               )
             aws sns publish --topic-arn arn:aws:sns:us-east-1:380183619747:lavanya --message "$MESSAGE"
 
 
