@@ -103,4 +103,17 @@ jobs:
             - Checkout_publish: ${{ needs.terraform.outputs.checkout-status }}
             - Deploy: ${{ needs.deploy.outputs.deploy-status }}
 
-            
+      - name: Send SNS success notification
+        if: success()
+        run: |
+            MESSAGE*Job Status Summary*  
+            Pipeline: ${{ github.workflow }}
+            Status: ${{ job.status }}
+            Completed Jobs:
+            - Checkout_publish: ${{ needs.terraform.outputs.checkout-status }}
+            - Deploy: ${{ needs.deploy.outputs.deploy-status }}
+            Thank you for your contribution! 😊"
+            aws sns publish --topic-arn arn:aws:sns:us-east-1:380183619747:lavanya --message "$MESSAGE"
+
+
+ 
