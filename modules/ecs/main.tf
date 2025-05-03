@@ -46,8 +46,8 @@ resource "aws_ecs_task_definition" "nginx" {
     name      = "nginx"
     image     = var.nginx_image
     portMappings = [{
-      containerPort = 8080
-      hostPort      = 8080
+      containerPort =  80
+      hostPort      = 80
     }]
   }])
 }
@@ -80,8 +80,8 @@ resource "aws_ecs_task_definition" "apache" {
     name      = "apache"
     image     = var.apache_image
     portMappings = [{
-      containerPort = 80
-      hostPort      = 80
+      containerPort = 5678
+      hostPort      = 5678
     }]
   }])
 }
