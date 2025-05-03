@@ -4,7 +4,7 @@ resource "aws_ecs_cluster" "this" {
  
 resource "aws_lb_target_group" "nginx" {
   name     = "${var.env}-nginx-tg"
-  port     = 8080
+  port     = 80
   protocol = "HTTP"
   vpc_id   = var.vpc_id
   target_type = "ip"
@@ -26,7 +26,7 @@ resource "aws_lb_target_group" "tomcat" {
  
 resource "aws_lb_target_group" "apache" {
   name     = "${var.env}-apache-tg"
-  port     = 80
+  port     = 5678
   protocol = "HTTP"
   vpc_id   = var.vpc_id
   target_type = "ip"
@@ -63,8 +63,8 @@ resource "aws_ecs_task_definition" "tomcat" {
     name      = "tomcat"
     image     = var.tomcat_image
     portMappings = [{
-      containerPort = 8090
-      hostPort      = 8090
+      containerPort = 8080
+      hostPort      = 8080
     }]
   }])
 }
@@ -102,7 +102,7 @@ resource "aws_ecs_service" "nginx" {
   load_balancer {
     target_group_arn = aws_lb_target_group.nginx.arn
     container_name   = "nginx"
-    container_port   = 8080
+    container_port   = 80
   }
  
   depends_on = [aws_lb_target_group.nginx]
@@ -124,7 +124,7 @@ resource "aws_ecs_service" "tomcat" {
   load_balancer {
     target_group_arn = aws_lb_target_group.tomcat.arn
     container_name   = "tomcat"
-    container_port   = 8090
+    container_port   = 8080
   }
  
   depends_on = [aws_lb_target_group.tomcat]
@@ -146,7 +146,7 @@ resource "aws_ecs_service" "apache" {
   load_balancer {
     target_group_arn = aws_lb_target_group.apache.arn
     container_name   = "apache"
-    container_port   = 80
+    container_port   = 5678
   }
  
   depends_on = [aws_lb_target_group.apache]
