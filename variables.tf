@@ -6,7 +6,7 @@ variable "azs" { type = list(string) }
 variable "cluster_name" { type = string }
 variable "alb_name" { type = string }
 variable "nginx_image" {
-  default = "docker.io/hashicorp/http-echo:latest"
+  default = "docker.io/nginxdemos/hello:latest"
 }
 
 variable "tomcat_image" {
