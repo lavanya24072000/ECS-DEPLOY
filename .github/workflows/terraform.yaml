@@ -117,7 +117,8 @@ jobs:
       - name: Send SNS success notification
         if: success()
         run: |
-            MESSAGE= $(cat <<EOF 
+            MESSAGE=$(cat <<EOF 
+            
             "*Job Status Summary*  
             Pipeline: ${{ github.workflow }}
             Status: ${{ job.status }}
@@ -125,6 +126,7 @@ jobs:
             - Checkout_publish: ${{ needs.terraform.outputs.checkout-status }}
             - Deploy: ${{ needs.deploy.outputs.deploy-status }}
             Thank you for your contribution! 😊"
+            
             EOF
                )
             aws sns publish --topic-arn arn:aws:sns:us-east-1:380183619747:lavanya --message "$MESSAGE"
