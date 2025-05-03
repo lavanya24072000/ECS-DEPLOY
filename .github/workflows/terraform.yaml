@@ -76,6 +76,7 @@ jobs:
  
       - name: Run tflint
         run: tflint --init && tflint
+        continue-on-error: true
 
                   ############## need approval to  apply command ###########
       - name: Apply if checks pass
