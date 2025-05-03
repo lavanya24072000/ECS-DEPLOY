@@ -82,9 +82,9 @@ jobs:
         run: terraform apply -auto-approve -var-file="terraform.tfvars"
 
         
-      - name: Terraform destroy
-        if: always()
-        run: terraform destroy -auto-approve
+      # - name: Terraform destroy
+      #   if: always()
+      #   run: terraform destroy -auto-approve
 
                         ############## publish artifacts ###########
                         
