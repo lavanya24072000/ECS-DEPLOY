@@ -4,6 +4,7 @@ on:
     paths:
       - '**/*.tf'
       - '**/*.tfvars'
+  push:
  
 permissions:
   id-token: write
@@ -29,13 +30,13 @@ jobs:
         
           ##########  TERRAFORM DOCS ###########
           
-      - name: Generate Terraform docs
-        uses: terraform-docs/gh-actions@v1
-        with:
-          working-dir: ./
-          output-file: README.md
-          output-method: replace
-          git-push: true
+      # - name: Generate Terraform docs
+      #   uses: terraform-docs/gh-actions@v1
+      #   with:
+      #     working-dir: ./
+      #     output-file: README.md
+      #     output-method: replace
+      #     git-push: true
             ########## aws authenticate ###########
             
       - name: Configure AWS credentials
