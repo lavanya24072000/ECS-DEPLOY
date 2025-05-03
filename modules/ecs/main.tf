@@ -47,7 +47,6 @@ resource "aws_ecs_task_definition" "nginx" {
     image     = var.nginx_image
     portMappings = [{
       containerPort =  80
-      hostPort      = 80
     }]
   }])
 }
@@ -64,7 +63,6 @@ resource "aws_ecs_task_definition" "tomcat" {
     image     = var.tomcat_image
     portMappings = [{
       containerPort = 8080
-      hostPort      = 8080
     }]
   }])
 }
@@ -81,7 +79,6 @@ resource "aws_ecs_task_definition" "apache" {
     image     = var.apache_image
     portMappings = [{
       containerPort = 5678
-      hostPort      = 5678
     }]
   }])
 }
