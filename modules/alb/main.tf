@@ -33,7 +33,7 @@ resource "aws_lb_listener" "http" {
     type             = "fixed-response"
     fixed_response {
       content_type = "text/plain"
-      message_body = "Default response"
+      message_body = " HELLO THIS IS DEFAULT MESSAGE"
       status_code  = "200"
     }
   }
