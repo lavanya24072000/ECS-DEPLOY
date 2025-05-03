@@ -47,7 +47,7 @@ resource "aws_lb_listener_rule" "nginx" {
     target_group_arn = var.target_groups["nginx"]
   }
   condition {
-    path_pattern { values = ["/nginx*"] }
+    path_pattern { values = ["/image*"] }
   }
 }
 
@@ -59,7 +59,7 @@ resource "aws_lb_listener_rule" "tomcat" {
     target_group_arn = var.target_groups["tomcat"]
   }
   condition {
-    path_pattern { values = ["/tomcat*"] }
+    path_pattern { values = ["/register*"] }
   }
 }
 
@@ -71,7 +71,7 @@ resource "aws_lb_listener_rule" "apache" {
     target_group_arn = var.target_groups["apache"]
   }
   condition {
-    path_pattern { values = ["/apache*"] }
+    path_pattern { values = ["/login*"] }
   }
 }
 
