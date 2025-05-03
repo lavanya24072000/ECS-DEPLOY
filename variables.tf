@@ -10,7 +10,7 @@ variable "nginx_image" {
 }
  
 variable "tomcat_image" {
-  default = "tomcat:latest"
+  default = "tomcat:9.0.104-jdk8-corretto-al2"
 }
  
 variable "apache_image" {
