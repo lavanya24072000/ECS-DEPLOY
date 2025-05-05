@@ -1,10 +1,9 @@
 terraform {
-  backend "remote" {
-    organization = "sample-001"
- 
-    workspaces {
-      name = "ECS-DEPLOY"
-    }
+  backend "s3" {
+    bucket         = "lavanya-bucket001"
+    key            = "dev/terraform.tfstate"
+    region         = "us-east-1"
+    encrypt        = true
+    use_lockfile   = true
   }
 }
-
