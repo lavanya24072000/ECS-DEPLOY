@@ -1,6 +1,5 @@
 name: Terraform Infra Pipeline
 
-
 on:
   pull_request:
     paths:
