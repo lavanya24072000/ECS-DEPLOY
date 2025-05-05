@@ -1,5 +1,4 @@
 name: ECS Service Deploy
-
 on:
   push:
   # workflow_run:
