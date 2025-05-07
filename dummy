@@ -1,0 +1,26 @@
+PFA, mock uc 1, please start working on design, implementation, all best practices and automate using terraform with gh actions.
+
+Use Case: Automated Image Resizing and Transfer System Using AWS Services
+Title: Building an automated system for image processing and management.
+ Objective:
+This use case focuses on building an automated system for image processing and management within the AWS ecosystem. The goal is to streamline the handling of images by automatically resizing them and transferring them to a designated storage location while keeping stakeholders informed through notifications. Key AWS services, such as Lambda, S3, and SNS, are used to orchestrate this workflow.
+ Contain:
+Image processing automation: Automatically resize and optimize images upon upload.
+Secure storage: Store processed images in a secure and reliable S3 bucket.
+Real-time notifications: Receive immediate updates about image processing via SNS.
+Scalable architecture: Design for scalability to handle image processing demands.
+Cost-efficient solution: Leverage AWS serverless technologies to minimize operational costs.
+ 
+Output: 
+Target architecture 
+Target Technology Stack 
+Implementation (AWS UI/ Terraform Script) 
+Create an understanding document based on implementation 
+Part II 
+Create GitHub Action Workflow file that triggers on push to the main branch. 
+The workflow should: 
+Set up Terraform 
+Initialize Terraform 
+Generate Terraform Plan 
+Include Best practices
+ Ref link: mathesh-me/image-resizing-using-s3-lambda-sns
